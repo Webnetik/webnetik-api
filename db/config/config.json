@@ -1,0 +1,20 @@
+{
+  "development": {
+    "username": "doadmin",
+    "password": "lfim3sigxwistnw1",
+    "database": "test",
+    "host": "calculeat-do-user-1844315-0.db.ondigitalocean.com",
+    "port": "25060",
+    "define": {
+      "underscored": true,
+      "freezeTableName": true,
+      "timestamps": false
+    },
+    "dialect": "postgres",
+    "ssl": true,
+    "dialectOptions": {
+      "charset": "utf8mb4",
+      "ssl": true
+    }
+  }
+}
