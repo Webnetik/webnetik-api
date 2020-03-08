@@ -1,6 +1,7 @@
 const app = require('express')();
 const http = require('http').Server(app).listen(3001);
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -14,3 +15,5 @@ app.use(function(request, response, next) {
 const userController = require('./controllers/user');
 
 app.use('/users', userController);
+
+module.exports = app;

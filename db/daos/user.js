@@ -9,6 +9,16 @@ async function getAllUsers() {
     });
 }
 
+async function getUserByNameAndPassword(username, password) {
+    return models.user.findOne({
+        where: {
+            username: username,
+            password: password
+        }
+    });
+}
+
 module.exports = {
-    getAllUsers
+    getAllUsers,
+    getUserByNameAndPassword
 };
