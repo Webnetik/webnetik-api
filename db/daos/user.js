@@ -23,12 +23,18 @@ async function createUser(username, password) {
         username: username,
         password: password
     });
+
     const defaultRole = await models.role.findOne({
         where: {
             name: "user"
         }
     });
-    //user.setRole(defaultRole);
+
+    await models.user_role.create({
+        user_id: user.get().id,
+        role_id: defaultRole.get().id
+    });
+
     return user;
 }
 
