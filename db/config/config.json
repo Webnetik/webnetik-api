@@ -2,7 +2,8 @@
   "development": {
     "username": "doadmin",
     "password": "lfim3sigxwistnw1",
-    "database": "test",
+    "dialect": "postgres",
+    "database": "webnetik-api",
     "host": "calculeat-do-user-1844315-0.db.ondigitalocean.com",
     "port": "25060",
     "define": {
@@ -10,8 +11,6 @@
       "freezeTableName": true,
       "timestamps": false
     },
-    "dialect": "postgres",
-    "ssl": true,
     "dialectOptions": {
       "charset": "utf8mb4",
       "ssl": true
