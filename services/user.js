@@ -50,9 +50,12 @@ function validateUserToken(token) {
     const publicKey = getPublicUserKey();
 
     return jwt.verify(token, publicKey, { algorithm: algorithm }, (error, decoded) => {
-        console.log(error);
         if (error) {
-            throw new Error('Invalid user token: '+error);
+            if(error.name === "TokenExpiredError") {
+                throw new Error('User token expired');
+            } else {
+                throw new Error('Invalid user token');
+            }
         } else {
             return decoded.data;
         }
