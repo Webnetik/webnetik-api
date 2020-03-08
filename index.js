@@ -1,7 +1,7 @@
-const app = require('express')();
-const http = require('http').Server(app).listen(3001);
-const bodyParser = require('body-parser');
 require('dotenv').config();
+const app = require('express')();
+const http = require('http').Server(app).listen(process.env.API_PORT);
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));

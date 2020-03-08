@@ -18,7 +18,37 @@ async function getUserByNameAndPassword(username, password) {
     });
 }
 
+async function createUser(username, password) {
+    const user = await models.user.create({
+        username: username,
+        password: password
+    });
+
+    const defaultRole = await models.role.findOne({
+        where: {
+            name: "user"
+        }
+    });
+
+    await models.user_role.create({
+        user_id: user.get().id,
+        role_id: defaultRole.get().id
+    });
+
+    return user;
+}
+
+async function getUserById(userId) {
+    return models.user.findOne({
+        where: {
+            id: userId
+        }
+    });
+}
+
 module.exports = {
     getAllUsers,
-    getUserByNameAndPassword
+    getUserByNameAndPassword,
+    createUser,
+    getUserById
 };

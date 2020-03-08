@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   user.associate = function (models) {
+    user.belongsToMany(models.role, { through: 'user_role' });
   };
 
   return user;
