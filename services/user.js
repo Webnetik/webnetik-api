@@ -10,7 +10,7 @@ async function login(username, password) {
         } else {
             const privateKey = getPrivateUserKey();
 
-            return createUserToken(privateKey);
+            return createUserToken(user.id, privateKey);
         }
     } else {
         throw new Error('Invalid username or password');
@@ -29,9 +29,9 @@ function getPublicUserKey() {
     return publicKeyBuffer.toString('ascii').trim();
 }
 
-function createUserToken(privateKey) {
+function createUserToken(userId, privateKey) {
     const data = {
-        id: 0
+        id: userId
     };
 
     return jwt.sign({
@@ -57,9 +57,17 @@ function validateUserToken(token) {
                 throw new Error('Invalid user token');
             }
         } else {
-            return decoded.data;
+            return decoded.data.id;
         }
     });
+}
+
+async function createUser(username, password) {
+    if(validateUsernameAndPassword(username, password)) {
+        return await userDAO.createUser(username, password);
+    } else {
+        throw new Error('Invalid username or password');
+    }
 }
 
 /*
@@ -77,5 +85,6 @@ function validateUsernameAndPassword(username, password) {
 
 module.exports = {
     login,
-    validateUserToken
+    validateUserToken,
+    createUser
 };

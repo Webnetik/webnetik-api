@@ -8,7 +8,7 @@ function verifyUserToken(request, response, next) {
             request.error = "Wrong authentication";
         } else {
             try {
-                request.userData = userService.validateUserToken(token);
+                request.userId = userService.validateUserToken(token);
             } catch(error) {
                 request.error = error.message;
             }

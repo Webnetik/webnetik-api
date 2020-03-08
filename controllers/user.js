@@ -6,6 +6,8 @@ const userDAO = require('../db/daos/user');
 const userService = require('../services/user');
 
 const verifyUserToken = require('../middlewares/authentication.middleware');
+const validateCapabilities = require('../middlewares/capability.middleware');
+
 
 router.get('/users', verifyUserToken, asyncHandler(async (request, response) => {
     if(!request.error) {
@@ -37,6 +39,24 @@ router.post('/validate', asyncHandler(async (request, response) => {
         response.status(200).json({ result });
     } catch (error) {
         response.status(403).send(error.message);
+    }
+}));
+
+router.post('/register', verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, ['register_user']),
+    asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const { username, password } = request.body;
+
+        try {
+            const result = await userService.createUser(username, password);
+
+            response.status(200).json({ result });
+        } catch (error) {
+            response.status(403).send(error.message);
+        }
+    } else {
+        response.status(403).json({ "error": request.error });
     }
 }));
 
