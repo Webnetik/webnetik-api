@@ -4,10 +4,12 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('user', [
       {
-        name: "Dora"
+        username: "Dora",
+        password: "david"
       },
       {
-        name: "Peter"
+        username: "Peter",
+        password: "peter"
       }
     ]);
   },

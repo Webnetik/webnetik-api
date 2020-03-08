@@ -14,3 +14,5 @@ app.use(function(request, response, next) {
 const userController = require('./controllers/user');
 
 app.use('/users', userController);
+
+module.exports = app;
