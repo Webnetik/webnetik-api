@@ -15,7 +15,19 @@ router.post('/login', asyncHandler(async (request, response) => {
     const { username, password } = request.body;
 
     try {
-        const result = await userService.login(username, password);
+        const token = await userService.login(username, password);
+
+        response.status(200).json({ token });
+    } catch (error) {
+        response.status(403).send(error.message);
+    }
+}));
+
+router.post('/validate', asyncHandler(async (request, response) => {
+    const { token } = request.body;
+
+    try {
+        const result = await userService.validateUserToken(token);
 
         response.status(200).json({ result });
     } catch (error) {
