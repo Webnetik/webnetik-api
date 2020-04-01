@@ -26,7 +26,35 @@ async function getAllCapabilities() {
     });
 }
 
+async function changeRoleCapabilities(roleId, capabilities) {
+    try {
+        const role = await models.role.findByPk(roleId);
+        const caps = await models.capability.findAll({
+            where: {
+                name: {
+                    [Sequelize.Op.in]: capabilities
+                }
+            }
+        });
+        await role.setCapabilities(caps);
+
+        const result = {
+            roleId: roleId,
+            capabilities: caps
+        };
+
+        return Promise.resolve(result);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+
+
+
+
+}
+
 module.exports = {
     getAllRoles,
-    getAllCapabilities
+    getAllCapabilities,
+    changeRoleCapabilities
 };

@@ -13,7 +13,9 @@ app.use(function(request, response, next) {
 });
 
 const userController = require('./controllers/user');
+const roleController = require('./controllers/role');
 
 app.use('/users', userController);
+app.use('/roles', roleController);
 
 module.exports = app;
