@@ -3,6 +3,12 @@ const models = require('../models');
 
 async function getAllUsers() {
     return models.user.findAll({
+        include: [
+            {
+                model: models.role,
+                attributes: ['name']
+            }
+        ],
         order: [
             ['id', 'DESC']
         ]

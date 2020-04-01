@@ -3,13 +3,22 @@ const router = express.Router();
 const asyncHandler = require('express-async-handler');
 
 const userDAO = require('../db/daos/user');
+const roleDAO = require('../db/daos/role');
 const userService = require('../services/user');
 
 const verifyUserToken = require('../middlewares/authentication.middleware');
 const validateCapabilities = require('../middlewares/capability.middleware');
 
+router.get('/roles', asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const roles = await roleDAO.getAllRoles();
+        response.status(200).json({ "roles": roles });
+    } else {
+        response.status(403).json({ "error": request.error });
+    }
+}));
 
-router.get('/users', verifyUserToken, asyncHandler(async (request, response) => {
+router.get('/users', asyncHandler(async (request, response) => {
     if(!request.error) {
         const users = await userDAO.getAllUsers();
         response.status(200).json({ "users": users });
@@ -17,6 +26,15 @@ router.get('/users', verifyUserToken, asyncHandler(async (request, response) => 
         response.status(403).json({ "error": request.error });
     }
 }));
+
+/*router.get('/users', verifyUserToken, asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const users = await userDAO.getAllUsers();
+        response.status(200).json({ "users": users });
+    } else {
+        response.status(403).json({ "error": request.error });
+    }
+}));*/
 
 router.post('/login', asyncHandler(async (request, response) => {
     const { username, password } = request.body;
