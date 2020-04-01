@@ -18,6 +18,15 @@ router.get('/roles', asyncHandler(async (request, response) => {
     }
 }));
 
+router.get('/capabilities', asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const capabilities = await roleDAO.getAllCapabilities();
+        response.status(200).json({ "capabilities": capabilities });
+    } else {
+        response.status(403).json({ "error": request.error });
+    }
+}));
+
 router.get('/users', asyncHandler(async (request, response) => {
     if(!request.error) {
         const users = await userDAO.getAllUsers();
