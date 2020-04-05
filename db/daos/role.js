@@ -47,14 +47,17 @@ async function changeRoleCapabilities(roleId, capabilities) {
     } catch (error) {
         return Promise.reject(error);
     }
+}
 
-
-
-
+async function createRole(roleName) {
+    return await models.role.create({
+        name: roleName
+    });
 }
 
 module.exports = {
     getAllRoles,
     getAllCapabilities,
-    changeRoleCapabilities
+    changeRoleCapabilities,
+    createRole
 };
