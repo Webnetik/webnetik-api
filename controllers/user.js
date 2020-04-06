@@ -9,41 +9,7 @@ const userService = require('../services/user');
 const verifyUserToken = require('../middlewares/authentication.middleware');
 const validateCapabilities = require('../middlewares/capability.middleware');
 
-router.get('/roles', asyncHandler(async (request, response) => {
-    if(!request.error) {
-        const roles = await roleDAO.getAllRoles();
-        response.status(200).json({ "roles": roles });
-    } else {
-        response.status(403).json({ "error": request.error });
-    }
-}));
-
-router.get('/capabilities', asyncHandler(async (request, response) => {
-    if(!request.error) {
-        const capabilities = await roleDAO.getAllCapabilities();
-        response.status(200).json({ "capabilities": capabilities });
-    } else {
-        response.status(403).json({ "error": request.error });
-    }
-}));
-
-router.get('/users', asyncHandler(async (request, response) => {
-    if(!request.error) {
-        const users = await userDAO.getAllUsers();
-        response.status(200).json({ "users": users });
-    } else {
-        response.status(403).json({ "error": request.error });
-    }
-}));
-
-/*router.get('/users', verifyUserToken, asyncHandler(async (request, response) => {
-    if(!request.error) {
-        const users = await userDAO.getAllUsers();
-        response.status(200).json({ "users": users });
-    } else {
-        response.status(403).json({ "error": request.error });
-    }
-}));*/
+/* Public routes */
 
 router.post('/login', asyncHandler(async (request, response) => {
     const { username, password } = request.body;
@@ -69,8 +35,46 @@ router.post('/validate', asyncHandler(async (request, response) => {
     }
 }));
 
+/* Routes with roles */
+
+const config = require('../middlewares/roles.config');
+
+router.get('/users', verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, [config.GET_USERS]),
+    asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const users = await userDAO.getAllUsers();
+        response.status(200).json({ "users": users });
+    } else {
+        response.status(403).json({ "error": request.error });
+    }
+}));
+
+router.get('/roles',
+    verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, [config.GET_ROLES]),
+    asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const roles = await roleDAO.getAllRoles();
+        response.status(200).json({ "roles": roles });
+    } else {
+        response.status(403).json({ "error": request.error });
+    }
+}));
+
+router.get('/capabilities', verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, [config.GET_CAPABILITIES]),
+    asyncHandler(async (request, response) => {
+    if(!request.error) {
+        const capabilities = await roleDAO.getAllCapabilities();
+        response.status(200).json({ "capabilities": capabilities });
+    } else {
+        response.status(403).json({ "error": request.error });
+    }
+}));
+
 router.post('/register', verifyUserToken,
-    (request, response, next) => validateCapabilities(request, response, next, ['register_user']),
+    (request, response, next) => validateCapabilities(request, response, next, [config.ADD_NEW_USER]),
     asyncHandler(async (request, response) => {
     if(!request.error) {
         const { username, password } = request.body;
