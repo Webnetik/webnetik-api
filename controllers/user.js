@@ -8,6 +8,7 @@ const userService = require('../services/user');
 
 const verifyUserToken = require('../middlewares/authentication.middleware');
 const validateCapabilities = require('../middlewares/capability.middleware');
+const config = require('../middlewares/roles.config');
 
 /* Public routes */
 
@@ -37,9 +38,8 @@ router.post('/validate', asyncHandler(async (request, response) => {
 
 /* Routes with roles */
 
-const config = require('../middlewares/roles.config');
-
-router.get('/users', verifyUserToken,
+router.get('/users',
+    verifyUserToken,
     (request, response, next) => validateCapabilities(request, response, next, [config.GET_USERS]),
     asyncHandler(async (request, response) => {
     if(!request.error) {
@@ -62,7 +62,8 @@ router.get('/roles',
     }
 }));
 
-router.get('/capabilities', verifyUserToken,
+router.get('/capabilities',
+    verifyUserToken,
     (request, response, next) => validateCapabilities(request, response, next, [config.GET_CAPABILITIES]),
     asyncHandler(async (request, response) => {
     if(!request.error) {
@@ -73,7 +74,8 @@ router.get('/capabilities', verifyUserToken,
     }
 }));
 
-router.post('/register', verifyUserToken,
+router.post('/register',
+    verifyUserToken,
     (request, response, next) => validateCapabilities(request, response, next, [config.ADD_NEW_USER]),
     asyncHandler(async (request, response) => {
     if(!request.error) {

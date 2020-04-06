@@ -4,7 +4,14 @@ const asyncHandler = require('express-async-handler');
 
 const roleDAO = require('../db/daos/role');
 
-router.post('/changeCapabilities', asyncHandler(async (request, response) => {
+const verifyUserToken = require('../middlewares/authentication.middleware');
+const validateCapabilities = require('../middlewares/capability.middleware');
+const config = require('../middlewares/roles.config');
+
+router.post('/changeCapabilities',
+    verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, [config.CHANGE_ROLE_CAPABILITIES]),
+    asyncHandler(async (request, response) => {
     const { roleId, capabilities } = request.body;
 
     try {
@@ -16,7 +23,10 @@ router.post('/changeCapabilities', asyncHandler(async (request, response) => {
     }
 }));
 
-router.post('/create', asyncHandler(async (request, response) => {
+router.post('/create',
+    verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, [config.ADD_NEW_ROLE]),
+    asyncHandler(async (request, response) => {
     const { roleName } = request.body;
 
     try {
