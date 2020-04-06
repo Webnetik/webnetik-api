@@ -50,6 +50,19 @@ router.get('/users',
     }
 }));
 
+router.get('/profile',
+    verifyUserToken,
+    (request, response, next) => validateCapabilities(request, response, next, [config.GET_USERS]),
+    asyncHandler(async (request, response) => {
+        if(!request.error) {
+            const userProfile = await userDAO.getUserProfileById(request.userId);
+            response.status(200).json({ "profile": userProfile });
+        } else {
+            response.status(403).json({ "error": request.error });
+        }
+    }
+));
+
 router.get('/roles',
     verifyUserToken,
     (request, response, next) => validateCapabilities(request, response, next, [config.GET_ROLES]),

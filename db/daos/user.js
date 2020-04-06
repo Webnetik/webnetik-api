@@ -52,9 +52,30 @@ async function getUserById(userId) {
     });
 }
 
+async function getUserProfileById(userId) {
+    return models.user.findOne({
+        where: {
+            id: userId
+        },
+        include: [
+            {
+                model: models.role,
+                attributes: ['name'],
+                through: {
+                    attributes: []
+                }
+            }
+        ],
+        order: [
+            ['id', 'DESC']
+        ]
+    });
+}
+
 module.exports = {
     getAllUsers,
     getUserByNameAndPassword,
     createUser,
-    getUserById
+    getUserById,
+    getUserProfileById
 };
