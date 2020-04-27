@@ -63,7 +63,16 @@ async function getUserProfileById(userId) {
                 attributes: ['name'],
                 through: {
                     attributes: []
-                }
+                },
+                include: [
+                    {
+                        model: models.capability,
+                        attributes: ['id', 'name'],
+                        through: {
+                            attributes: []
+                        }
+                    }
+                ],
             }
         ],
         order: [

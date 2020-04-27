@@ -14,8 +14,10 @@ app.use(function(request, response, next) {
 
 const userController = require('./controllers/user');
 const roleController = require('./controllers/role');
+const courseController = require('./controllers/course');
 
 app.use('/users', userController);
 app.use('/roles', roleController);
+app.use('/courses', courseController);
 
 module.exports = app;
