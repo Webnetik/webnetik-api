@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler');
 
-
 const courseDAO = require('../db/daos/course');
 
 router.get('/all', asyncHandler(async (request, response) => {
@@ -15,6 +14,13 @@ router.post('/add', asyncHandler(async (request, response) => {
     const course = await courseDAO.create(title, description);
 
     response.status(200).json({ course });
+}));
+
+router.post('/delete', asyncHandler(async (request, response) => {
+    const { id } = request.body;
+    const course = await courseDAO.deleteCourse(id);
+
+    response.status(200).json({ "courseId": course });
 }));
 
 module.exports = router;
