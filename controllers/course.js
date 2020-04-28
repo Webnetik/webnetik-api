@@ -23,4 +23,13 @@ router.post('/delete', asyncHandler(async (request, response) => {
     response.status(200).json({ "courseId": course });
 }));
 
+router.post('/modify', asyncHandler(async (request, response) => {
+    const { course } = request.body;
+
+    const modifiedCourse = await courseDAO.modifyCourse(course);
+
+    response.status(200).json({ "modifiedCourse": modifiedCourse });
+}));
+
+
 module.exports = router;

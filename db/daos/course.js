@@ -25,8 +25,21 @@ async function deleteCourse(id) {
     return id;
 }
 
+async function modifyCourse(course) {
+    const c = await models.course.findOne({
+        where: {
+            id: course.id
+        }
+    });
+    c.title = course.title;
+    c.description = course.description;
+
+    return await c.save();
+}
+
 module.exports = {
     getAll,
     create,
-    deleteCourse
+    deleteCourse,
+    modifyCourse
 };
